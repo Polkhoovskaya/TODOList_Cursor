@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ heading }}{% endblock %}
+{% block content %}
+<section class="card">
+    <h2 style="margin-top:0;">{{ heading }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div style="display:flex; flex-direction:column; gap:1rem;">
+            {% for field in form %}
+                <label>
+                    <div style="font-weight:600;">{{ field.label }}{% if field.field.required %} *{% endif %}</div>
+                    {{ field }}
+                    {% if field.help_text %}<small style="color:#52525b;">{{ field.help_text }}</small>{% endif %}
+                    {% if field.errors %}
+                        <div style="color:#b91c1c;">{{ field.errors|striptags }}</div>
+                    {% endif %}
+                </label>
+            {% endfor %}
+        </div>
+        <div class="actions" style="margin-top:1.5rem;">
+            <button type="submit" class="button">Save</button>
+            <a class="button secondary" href="{% url 'todos:list' %}">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
+

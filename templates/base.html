@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Todos{% endblock %}</title>
+    <style>
+        :root {
+            font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+            background-color: #f6f7fb;
+            color: #1f2933;
+        }
+        body {
+            margin: 0;
+        }
+        header {
+            background-color: #243b53;
+            color: #fff;
+            padding: 1.25rem 2rem;
+        }
+        a {
+            color: #175cd3;
+        }
+        main {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(15, 23, 42, 0.08);
+        }
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        button,
+        .button {
+            border: none;
+            border-radius: 6px;
+            padding: 0.45rem 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: #fff;
+            background-color: #2563eb;
+        }
+        .button.secondary {
+            background-color: #475467;
+        }
+        .button.danger {
+            background-color: #dc2626;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .rounded {
+            border-radius: 8px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.1rem 0.45rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+        }
+        .badge-success {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+        .badge-warn {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        .badge-info {
+            background-color: #e0e7ff;
+            color: #3730a3;
+        }
+        .message {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            background-color: #dbeafe;
+            color: #1e3a8a;
+        }
+        form.inline {
+            display: inline;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <header>
+        <h1>Todo Tracker</h1>
+        <p>Capture tasks, set due dates, and close them out.</p>
+    </header>
+    <main>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
+

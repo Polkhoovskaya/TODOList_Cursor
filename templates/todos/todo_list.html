@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Todos{% endblock %}
+{% block content %}
+<section class="card">
+    <div class="actions" style="justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <div>
+            <a class="button" href="{% url 'todos:create' %}">New Todo</a>
+        </div>
+        <div class="actions">
+            <a class="button {% if status_filter == 'all' %}secondary{% endif %}" href="?status=all">All</a>
+            <a class="button {% if status_filter == 'pending' %}secondary{% endif %}" href="?status=pending">Pending</a>
+            <a class="button {% if status_filter == 'completed' %}secondary{% endif %}" href="?status=completed">Completed</a>
+        </div>
+    </div>
+    {% if todos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Todo</th>
+                    <th>Due</th>
+                    <th>Status</th>
+                    <th style="width: 180px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for todo in todos %}
+                <tr>
+                    <td>
+                        <strong>{{ todo.title }}</strong>
+                        {% if todo.description %}
+                            <div style="color:#64748b; font-size:0.9rem;">{{ todo.description }}</div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if todo.due_date %}
+                            <span class="badge {% if todo.is_completed %}badge-success{% elif todo.due_date <= today %}badge-warn{% else %}badge-info{% endif %}">
+                                {{ todo.due_date }}
+                            </span>
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if todo.is_completed %}
+                            <span class="badge badge-success">Resolved</span>
+                        {% else %}
+                            <span class="badge badge-info">Open</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="actions">
+                            <form class="inline" method="post" action="{% url 'todos:toggle' todo.pk %}?next={{ request.get_full_path|urlencode }}">
+                                {% csrf_token %}
+                                <button type="submit" class="button {% if todo.is_completed %}secondary{% endif %}">
+                                    {% if todo.is_completed %}Reopen{% else %}Resolve{% endif %}
+                                </button>
+                            </form>
+                            <a class="button secondary" href="{% url 'todos:edit' todo.pk %}">Edit</a>
+                            <a class="button danger" href="{% url 'todos:delete' todo.pk %}">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No todos yet. Start by <a href="{% url 'todos:create' %}">adding your first task</a>.</p>
+    {% endif %}
+</section>
+{% endblock %}
+
